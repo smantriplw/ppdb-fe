@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/Headers/navbar'
 import { Footer } from '@/components/Contents/footer'
 import './globals.css'
+import { NisnSharedProvider } from '@/components/Contents/nisn_shared'
 
 export const metadata = {
   title: 'PPDB SMAN 3 Palu',
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="en" data-theme="light">
       <body>
         <Navbar />
-        {children}
+          <NisnSharedProvider>
+            {children}
+          </NisnSharedProvider>
         <Footer />
       </body>
     </html>
