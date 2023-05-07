@@ -5,15 +5,22 @@ import { Container } from '@/components/Contents/container';
 import { LoginIcon } from '@/components/Forms/login_icon';
 import { FormField } from '@/components/Forms/field';
 import Link from 'next/link';
-import { NisnShareContext } from '@/contexts/nisn_shared';
 
 const righteous = Righteous({
   weight: '400',
   subsets: ['latin', 'latin-ext'],
 });
 
+type FormCurrentState = {
+  nisn: string;
+  ttl: string;
+}
+
 export default function Login() {
-  const state = React.useContext(NisnShareContext);
+  const [state, setState] = React.useState<FormCurrentState>({
+    nisn: '',
+    ttl: '',
+  });
 
   return (
     <React.Fragment>
@@ -29,10 +36,10 @@ export default function Login() {
       <Container>
         <div className="max-w-screen">
           <FormField labelKey="NISN" label="">
-            <input value={state.nisn === 0 ? undefined : state.nisn} onChange={(ev) => state.setValue('nisn', parseInt(ev.target.value, 10))} type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" name="nisn" />
+            <input value={state.nisn} onChange={(ev) => setState({...state, nisn: ev.target.value})} type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" name="nisn" />
           </FormField>
           <FormField labelKey="TTL" label="">
-            <input value={state.ttl} onChange={(ev) => state.setValue('ttl', ev.target.value)} type="text" placeholder="Palu, 24 Maret 2008" className="input input-bordered w-full max-w-xs" name="ttl" />
+            <input value={state.ttl} onChange={(ev) => setState({...state, ttl: ev.target.value})} type="text" placeholder="Palu, 24 Maret 2008" className="input input-bordered w-full max-w-xs" name="ttl" />
           </FormField>
         </div>
 

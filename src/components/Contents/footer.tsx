@@ -3,7 +3,7 @@ import React from 'react';
 export const Footer = () => {
     return (
         <React.Fragment>
-            <footer className="footer footer-center p-3 mt-48 bg-base-200 text-base-content rounded">
+            <footer className="footer mt-48 bottom-0 footer-center p-3 bg-base-200 text-base-content rounded">
                 <div className="grid grid-flow-col gap-4">
                     <a className="link link-hover" href="https://sman3palu.sch.id">Website</a> 
                     <a className="link link-hover" href="https://lulus.sman3palu.sch.id">Kelulusan</a> 
