@@ -5,14 +5,14 @@ import React, { useState } from 'react'
 
 export const NisnSharedProvider = ({ children }:React.PropsWithChildren) => {
     const [state, setState] = React.useState<SharedContextData>({
-        nisn: 0,
         setValue: (key, value) => {
             setState({
                 ...state,
                 [key]: value,
             });
-        },
+        }
     });
+    
     return (
         <React.Fragment>
             <NisnShareContext.Provider value={state}>
