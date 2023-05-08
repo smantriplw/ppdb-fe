@@ -1,16 +1,19 @@
 import { Container } from '@/components/Contents/container'
+import { Modal } from '@/components/Contents/modal';
 import { FormField } from '@/components/Forms/field';
+import { parsedate } from '@/lib/date';
 import { Routes } from '@/lib/routes';
 import { SharedData } from '@/resources/shared';
 import { Field, Form, Formik } from 'formik';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { useRouter } from 'next/navigation';
 import React from 'react'
+import { useBoolean } from 'usehooks-ts';
 import * as Yup from 'yup'
 
 const daftarSchema = Yup.object()
     .shape({
-        nik: Yup.string().matches(/^[0-9]{14,17}$/, {
+        nik: Yup.string().matches(/^[0-9]{16}$/, {
             message: 'NIK must be 16 chars',
         }),
         name: Yup.string().required().min(3),
@@ -28,6 +31,11 @@ const daftarSchema = Yup.object()
 
 export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
     const [fetchError, setFetchError] = React.useState('');
+    const [data, setData] = React.useState<{
+        nisn: string;
+        birthday: string;
+    }>();
+
     const nextRouter = useRouter();
     const { executeRecaptcha } = useReCaptcha();
 
@@ -40,6 +48,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                             validationSchema={daftarSchema}
                             onSubmit={async (values, helpers) => {
                                 helpers.setSubmitting(true);
+                                helpers.setErrors({});
 
                                 if (!executeRecaptcha) {
                                     setFetchError('reCaptcha doesn\'t ready yet');
@@ -67,7 +76,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                             setFetchError(res.error || res.message);
                                             helpers.setSubmitting(false);
                                         } else {
-                                            nextRouter.push('/');
+                                            setData(res.data);
                                             helpers.setSubmitting(false);
                                         }
                                     });
@@ -181,7 +190,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                                 </div>
                                             </div>
                                         ) : null}
-                                        <button disabled={isSubmitting} type="submit" className={`btn border-none bg-[#0E8A92] bg-opacity-90${isSubmitting ? ' loading' : ''}`}>
+                                        <button disabled={isSubmitting || !!data} type="submit" className={`btn border-none bg-[#0E8A92] bg-opacity-90${isSubmitting || !!data ? ' loading' : ''}`}>
                                             submit
                                         </button>
                                     </div>
@@ -191,6 +200,26 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                     </div>
                 </Container>
             </div>
+
+            <Modal opened={!!data} onClose={() => {
+                nextRouter.push('/');
+            }}>
+               <h3 className="font-bold text-2xl">
+                    PENDAFTARAN BERHASIL
+               </h3>
+
+               <p className="py-4">
+                    Mohon simpan data dibawah ini disimpan untuk digunakan login di halaman berikutnya:<br />
+                    Username: <span className="font-bold">{data?.nisn}</span><br />
+                    Password: <span className="font-bold">{parsedate(data?.birthday!)}</span>
+               </p>
+
+               <div className="modal-action mt-4">
+                <button className="btn btn-primary" onClick={() => {
+                    nextRouter.push('/');
+                }}>OK</button>
+               </div>
+            </Modal>
         </React.Fragment>
     )
 }
