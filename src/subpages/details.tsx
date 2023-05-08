@@ -1,7 +1,7 @@
 import { Container } from '@/components/Contents/container'
 import { Modal } from '@/components/Contents/modal';
 import { FormField } from '@/components/Forms/field';
-import { parsedate } from '@/lib/date';
+import { isValidDate, parsedate } from '@/lib/date';
 import { Routes } from '@/lib/routes';
 import { SharedData } from '@/resources/shared';
 import { Field, Form, Formik } from 'formik';
@@ -10,6 +10,20 @@ import { useRouter } from 'next/navigation';
 import React from 'react'
 import { useBoolean } from 'usehooks-ts';
 import * as Yup from 'yup'
+
+declare module 'yup' {
+    interface StringSchema {
+        lahir(msg: string): this;
+    }
+  }
+
+Yup.addMethod(Yup.string, 'lahir', function(this: Yup.StringSchema, msg: string) {
+    return this.test({
+        name: 'lahir',
+        message: msg,
+        test: (v) => isValidDate(v ?? ''),
+    });
+});
 
 const daftarSchema = Yup.object()
     .shape({
@@ -21,9 +35,9 @@ const daftarSchema = Yup.object()
         religion: Yup.string().required().oneOf(['islam', 'kristen', 'katolik', 'hindu', 'buddha', 'konghucu']),
         mother_name: Yup.string().required().min(3),
         father_name: Yup.string().required().min(3),
-        birthday: Yup.string().required().matches(/^([a-zA-Z]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]+)$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"'),
+        birthday: Yup.string().required().matches(/^([a-zA-Z]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]+)$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
         email: Yup.string().required().email(),
-        phone: Yup.string().required().matches(/[0-9]{10,14}/, 'Phone number must be 11 or 12 digits'),
+        phone: Yup.string().required().matches(/^(08[0-9]{9,10})$/, 'Phone number must be 11 or 12 digits'),
         graduated_year: Yup.number().required(),
         school: Yup.string().required().min(10).max(50),
         address: Yup.string().required().min(5).max(50),
@@ -35,6 +49,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
         nisn: string;
         birthday: string;
     }>();
+    const { value: wait, toggle: toggleWait } = useBoolean(false);
 
     const nextRouter = useRouter();
     const { executeRecaptcha } = useReCaptcha();
@@ -49,6 +64,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                             onSubmit={async (values, helpers) => {
                                 helpers.setSubmitting(true);
                                 helpers.setErrors({});
+                                toggleWait();
 
                                 if (!executeRecaptcha) {
                                     setFetchError('reCaptcha doesn\'t ready yet');
@@ -75,10 +91,14 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                         if (res.errors || res.error) {
                                             setFetchError(res.error || res.message);
                                             helpers.setSubmitting(false);
+                                            toggleWait();
                                         } else {
                                             setData(res.data);
                                             helpers.setSubmitting(false);
                                         }
+                                    }).catch((e) => {
+                                        setFetchError(e.message);
+                                        toggleWait();
                                     });
                                 }
                             }}
@@ -190,7 +210,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                                 </div>
                                             </div>
                                         ) : null}
-                                        <button disabled={isSubmitting || !!data} type="submit" className={`btn border-none bg-[#0E8A92] bg-opacity-90${isSubmitting || !!data ? ' loading' : ''}`}>
+                                        <button disabled={wait} type="submit" className={`btn border-none bg-[#0E8A92] bg-opacity-90${wait ? ' loading' : ''}`}>
                                             submit
                                         </button>
                                     </div>
@@ -209,7 +229,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                </h3>
 
                <p className="py-4">
-                    Mohon simpan data dibawah ini disimpan untuk digunakan login di halaman berikutnya:<br />
+                    Mohon simpan data dibawah ini untuk digunakan login di halaman berikutnya:<br />
                     Username: <span className="font-bold">{data?.nisn}</span><br />
                     Password: <span className="font-bold">{parsedate(data?.birthday!)}</span>
                </p>
