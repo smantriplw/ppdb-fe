@@ -5,7 +5,7 @@ export type RouteReturn = {
 
 export class Routes
 {
-    public static baseUrl = process.env.PPDB_API;
+    public static baseUrl = process.env.NODE_ENV === 'development' ? 'https://pepedebe.hxrst.my.id' : 'https://ppdb.sman3palu.sch.id';
     public static $routes = {
         'auth.peserta': ['/api/peserta', 'GET'],
         'auth.peserta.login': ['/api/peserta/login', 'POST'],
