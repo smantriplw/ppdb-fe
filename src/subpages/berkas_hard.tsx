@@ -133,24 +133,24 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                 {({ errors, setFieldError, isSubmitting, isValid }) => (
                     <Form>
                             <FormField label="Foto Pas 3x4">
-                                <Field disabled={isSubmitting} onChange={(ev) => {
-                                    handleFileChange('pas', ev.target.files?.[0], setFieldError);
+                                <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleFileChange('pas', (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="pas" required />
                                 {errors.pas ? (
                                     <p className="text-red-500">{errors.pas}</p>
                                 ) : null}
                             </FormField>
                             <FormField label="Foto SKHU">
-                                <Field disabled={isSubmitting} onChange={(ev) => {
-                                    handleFileChange('skhu', ev.target.files?.[0], setFieldError);
+                                <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleFileChange('skhu', (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="skhu" required />
                                 {errors.skhu ? (
                                     <p className="text-red-500">{errors.skhu}</p>
                                 ) : null}
                             </FormField>
                             <FormField label={p.name}>
-                                <Field disabled={isSubmitting} onChange={(ev) => {
-                                    handleFileChange(p.key, ev.target.files?.[0], setFieldError);
+                                <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
+                                    handleFileChange(p.key, (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name={p.key} required />
                                 {errors[p.key] ? (
                                     <p className="text-red-500">{errors[p.key]}</p>
