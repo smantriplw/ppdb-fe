@@ -104,7 +104,7 @@ export default function Login() {
             {({ errors, touched, isSubmitting }) => (
               <Form>
                 <FormField labelKey="NISN" label="">
-                  <Field disabled={isSubmitting} type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full md:w-max max-w-xs" name="nisn" />
+                  <Field disabled={isSubmitting} type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full md:w-max max-w-xs" name="nisn" />
                 </FormField>
                 {errors.nisn && touched.nisn ? (
                     <p className="text-red-500">{errors.nisn}</p>

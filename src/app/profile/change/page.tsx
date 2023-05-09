@@ -41,14 +41,9 @@ export default function ChangeProfile() {
                     DASHBOARD UBAH DATA DIRI
                 </h1>
             </div>
-            <Container>
-                <button className="btn btn-primary bg-[#205280] border-none hover:bg-[#205280] hover:bg-opacity-75" onClick={() => router.back()}>
-                    KEMBALI
-                </button>
                 {!isLoading && !data?.error ? (
                     <DetailsSubPage isNew={false} nisn={data.data.nisn} ttl={data.data.birthday} jalur={data.data.type} {...data.data} token={savedToken} />
                 ) : null}
-            </Container>
         </React.Fragment>
     )
 }

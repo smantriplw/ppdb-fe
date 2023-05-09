@@ -111,7 +111,7 @@ export default function Register() {
                     </div>
                   ) : null}
                   <FormField label="" labelKey="NISN">
-                    <Field type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" disabled={isSubmitting} name="nisn" />
+                    <Field type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" disabled={isSubmitting} name="nisn" />
                   </FormField>
                   {errors.nisn && touched.nisn ? (
                       <p className="text-red-500">{errors.nisn}</p>

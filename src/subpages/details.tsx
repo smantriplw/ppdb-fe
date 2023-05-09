@@ -51,6 +51,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
         nisn: string;
         birthday: string;
     }>();
+    const router = useRouter();
     const { value: wait, toggle: toggleWait } = useBoolean(false);
 
     const nextRouter = useRouter();
@@ -60,6 +61,9 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
         <React.Fragment>
             <div>
                 <Container>
+                    <button className="btn btn-primary bg-[#205280] border-none hover:bg-[#205280] hover:bg-opacity-75" onClick={() => router.back()}>
+                        KEMBALI
+                    </button>
                     <div>
                         <Formik
                             validationSchema={daftarSchema}
