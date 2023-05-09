@@ -117,12 +117,12 @@ export default function Register() {
                       <p className="text-red-500">{errors.nisn}</p>
                     ) : null}
                   <FormField label="" labelKey="JALUR">
-                    <select className="select max-w-xs font-normal w-72 md:w-2/3" name="type" required disabled={isSubmitting}>
+                    <Field as="select" className="select max-w-xs font-normal w-72 md:w-2/3" name="type" required disabled={isSubmitting}>
                       <option value={'zonasi'}>Zonasi</option>
                       <option value={'prestasi'}>Prestasi</option>
                       <option value={'afirmasi'}>Afirmasi</option>
                       <option value={'mutasi'}>Mutasi</option>
-                    </select>
+                    </Field>
                   </FormField>
                   {errors.type && touched.type ? (
                       <p className="text-red-500">{errors.type}</p>
