@@ -15,7 +15,7 @@ export const Footer = () => {
                     </div>
                 </div> 
                 <div>
-                    <p>Copyright © 2023 - Hanif Dwy Putra S & Moh. Khaidir Akmal</p>
+                    <p>Copyright © 2023 - <a href="https://github.com/smantriplw">SMAN 3 Palu</a> & <a href="https://github.com/hansputera">hansputera</a></p>
                 </div>
             </footer>
         </React.Fragment>
