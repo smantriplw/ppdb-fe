@@ -81,7 +81,6 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                 const tokenCaptcha = await executeRecaptcha('create');
                                 if (props.isNew) {
                                     const router = Routes.route('archives.create');
-
                                     fetch(router.url, {
                                         method: router.method,
                                         body: JSON.stringify(Object.assign(values, {
@@ -165,23 +164,23 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                         ) : null}
                                     </FormField>
                                     <FormField label="GENDER">
-                                        <select disabled={isSubmitting} defaultValue={'L'} name="gender" className="max-w-xs font-normal w-screen select" required>
+                                        <Field as="select" disabled={isSubmitting} defaultValue={'L'} name="gender" className="max-w-xs font-normal w-screen select" required>
                                             <option value="L">Laki</option>
                                             <option value="P">Perempuan</option>
-                                        </select>
+                                        </Field>
                                         {errors.gender && touched.gender ? (
                                             <p className="text-red-500">{errors.gender}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="AGAMA">
-                                        <select disabled={isSubmitting} defaultValue={'islam'} name="religion" className="max-w-xs font-normal w-screen select" required>
+                                        <Field as="select" disabled={isSubmitting} defaultValue={'islam'} name="religion" className="max-w-xs font-normal w-screen select" required>
                                             <option value="islam">Islam</option>
                                             <option value="kristen">Kristen</option>
                                             <option value="katolik">Katolik</option>
                                             <option value="hindu">Hindu</option>
-                                            <option value="Buddha">Buddha</option>
+                                            <option value="buddha">Buddha</option>
                                             <option value="konghucu">Konghucu</option>
-                                        </select>
+                                        </Field>
                                         {errors.religion && touched.religion ? (
                                             <p className="text-red-500">{errors.religion}</p>
                                         ) : null}
