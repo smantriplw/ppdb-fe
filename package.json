@@ -13,11 +13,11 @@
     "@types/react": "18.2.5",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
-    "cookies-next": "^2.1.1",
     "daisyui": "^2.51.6",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.5",
     "next": "13.4.1",
     "next-recaptcha-v3": "^1.1.5",
     "postcss": "8.4.23",
@@ -28,5 +28,8 @@
     "typescript": "5.0.4",
     "usehooks-ts": "^2.9.1",
     "yup": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.3"
   }
 }

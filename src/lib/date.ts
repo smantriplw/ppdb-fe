@@ -27,6 +27,9 @@ export const replaceDateWithMaps = (date: string): string => {
     let result = '';
     for (const key of Object.keys(dateMaps)) {
         result = date.toLowerCase().replace(key, dateMaps[key as keyof typeof dateMaps]);
+        if (result.indexOf(dateMaps[key as keyof typeof dateMaps]) !== -1) {
+            return result;
+        }
     }
 
     return result;

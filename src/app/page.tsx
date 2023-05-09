@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Righteous } from 'next/font/google';
 import { Container } from '@/components/Contents/container';
 import { LoginIcon } from '@/components/Forms/login_icon';
@@ -9,6 +9,8 @@ import * as Yup from 'yup';
 import { isValidPassword } from '@/lib/date';
 import { Field, Form, Formik } from 'formik';
 import { Routes } from '@/lib/routes';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 declare module 'yup' {
   interface StringSchema {
@@ -42,6 +44,14 @@ export default function Login() {
   const [data, setData] = React.useState<DataProps>({
     isError: false,
   });
+  const router = useRouter();
+
+  const savedToken = Cookies.get('ppdb_session');
+  useEffect(() => {
+    if (savedToken) {
+      router.push('/profile');
+    }
+  }, [router, savedToken]);
 
   return (
     <React.Fragment>
@@ -61,7 +71,7 @@ export default function Login() {
               helpers.setSubmitting(true);
               setData({ isError: false });
 
-              const route = Routes.route('auth.peserta');
+              const route = Routes.route('auth.peserta.login');
               fetch(route.url, {
                 method: 'POST',
                 headers: {
@@ -77,7 +87,9 @@ export default function Login() {
                   });
                   helpers.setSubmitting(false);
                 } else {
+                  Cookies.set('ppdb_session', res.data.token);
 
+                  router.push('/profile');
                 }
               }).catch((e) => setData({
                 isError: true,
@@ -92,7 +104,7 @@ export default function Login() {
             {({ errors, touched, isSubmitting }) => (
               <Form>
                 <FormField labelKey="NISN" label="">
-                  <Field disabled={isSubmitting} type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" name="nisn" />
+                  <Field disabled={isSubmitting} type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full md:w-max max-w-xs" name="nisn" />
                 </FormField>
                 {errors.nisn && touched.nisn ? (
                     <p className="text-red-500">{errors.nisn}</p>

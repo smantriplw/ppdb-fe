@@ -7,7 +7,8 @@ export class Routes
 {
     public static baseUrl = 'https://ppdb.api.sman3palu.sch.id';
     public static $routes = {
-        'auth.peserta': ['/api/peserta/login', 'POST'],
+        'auth.peserta': ['/api/peserta', 'GET'],
+        'auth.peserta.login': ['/api/peserta/login', 'POST'],
         'auth.peserta.refresh': ['/api/peserta/refresh', 'POST'],
 
         'archives.check': ['/api/archives/check', 'POST'],

@@ -77,9 +77,12 @@ export default function Register() {
                     if (res.error || res.errors) {
                       setError(res.error || res.message);
                       helpers.setSubmitting(false);
-                      setData(res.data);
                     } else {
                       helpers.setSubmitting(false);
+                      setData({
+                        nisn: values.nisn,
+                        type: values.type as JalurPendaftaran,
+                      });
                       togglePass();
                     }
                   }).catch(e => {
@@ -98,7 +101,7 @@ export default function Register() {
               }} 
             >
               {({ errors, touched, isSubmitting }) => (
-                <Form>
+                <Form className="items-center justify-center">
                   {error.length ? (
                     <div className="alert alert-error shadow-sm">
                       <div>
@@ -108,13 +111,13 @@ export default function Register() {
                     </div>
                   ) : null}
                   <FormField label="" labelKey="NISN">
-                    <Field type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-screen max-w-xs" disabled={isSubmitting} name="nisn" />
+                    <Field type="number" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" disabled={isSubmitting} name="nisn" />
                   </FormField>
                   {errors.nisn && touched.nisn ? (
                       <p className="text-red-500">{errors.nisn}</p>
                     ) : null}
                   <FormField label="" labelKey="JALUR">
-                    <select className="select max-w-xs font-normal w-screen" name="type" required disabled={isSubmitting}>
+                    <select className="select max-w-xs font-normal w-72 md:w-2/3" name="type" required disabled={isSubmitting}>
                       <option value={'zonasi'}>Zonasi</option>
                       <option value={'prestasi'}>Prestasi</option>
                       <option value={'afirmasi'}>Afirmasi</option>

@@ -13,10 +13,16 @@ export const FormField = (props: FormFieldProps) => {
                     {props.label}
                 </span>
             </label>
-            <label className={props.labelKey ? 'input-group' : ''}>
-                <span>{props.labelKey}</span>
-                {props.children}
-            </label>
+            {props.labelKey ? (
+                <label className="input-group">
+                    <span>{props.labelKey}</span>
+                    {props.children}
+                </label>
+            ) : (
+                <>
+                    {props.children}
+                </>
+            )}
         </div>
     )
 }

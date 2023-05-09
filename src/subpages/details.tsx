@@ -1,7 +1,7 @@
 import { Container } from '@/components/Contents/container'
 import { Modal } from '@/components/Contents/modal';
 import { FormField } from '@/components/Forms/field';
-import { isValidDate, parsedate } from '@/lib/date';
+import { isValidDate, parsedate, replaceDateWithMaps } from '@/lib/date';
 import { Routes } from '@/lib/routes';
 import { SharedData } from '@/resources/shared';
 import { Field, Form, Formik } from 'formik';
@@ -21,7 +21,9 @@ Yup.addMethod(Yup.string, 'lahir', function(this: Yup.StringSchema, msg: string)
     return this.test({
         name: 'lahir',
         message: msg,
-        test: (v) => isValidDate(v ?? ''),
+        test: (v) => {
+            return isValidDate(replaceDateWithMaps(v?.split(',').at(-1)?.trim() ?? ''));
+        },
     });
 });
 
@@ -43,7 +45,7 @@ const daftarSchema = Yup.object()
         address: Yup.string().required().min(5).max(50),
     });
 
-export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
+export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & SharedData) => {
     const [fetchError, setFetchError] = React.useState('');
     const [data, setData] = React.useState<{
         nisn: string;
@@ -100,6 +102,32 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                         setFetchError(e.message);
                                         toggleWait();
                                     });
+                                } else {
+                                    const router = Routes.route('archives.edit.details');
+                                    fetch(router.url, {
+                                        method: router.method,
+                                        body: JSON.stringify(Object.assign(values, {
+                                            type: props.jalur,
+                                            nisn: props.nisn,
+                                        })),
+                                        headers: {
+                                            Accept: 'application/json',
+                                            'Content-Type': 'application/json',
+                                            'Authorization': `Bearer ${props.token}`
+                                        },
+                                    }).then(res => res.json()).then(res => {
+                                        if (res.errors || res.error) {
+                                            setFetchError(res.error || res.message);
+                                            helpers.setSubmitting(false);
+                                            toggleWait();
+                                        } else {
+                                            setData(res.data);
+                                            helpers.setSubmitting(false);
+                                        }
+                                    }).catch((e) => {
+                                        setFetchError(e.message);
+                                        toggleWait();
+                                    });
                                 }
                             }}
                             initialValues={{
@@ -115,6 +143,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                 graduated_year: '2023',
                                 school: '',
                                 address: '',
+                                ...props,
                             }}
                         >
                             {({ errors, touched, isSubmitting }) => (
@@ -166,7 +195,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                                         ) : null}
                                     </FormField>
                                     <FormField label="TTL">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="birthday" placeholder="Contoh: Palu, 24 Maret 2007" required />
+                                        <Field disabled={props.isNew ? isSubmitting : true} className="input max-w-xs w-full" type="text" name="birthday" placeholder="Contoh: Palu, 24 Maret 2007" required />
                                         {errors.birthday && touched.birthday ? (
                                             <p className="text-red-500 break-words">{errors.birthday}</p>
                                         ) : null}
@@ -225,18 +254,26 @@ export const DetailsSubPage = (props:{ isNew: boolean; } & SharedData) => {
                 nextRouter.push('/');
             }}>
                <h3 className="font-bold text-2xl">
-                    PENDAFTARAN BERHASIL
+                    {props.isNew ? 'PENDAFTARAN BERHASIL' : 'UBAH DATA BERHASIL' }
                </h3>
 
                <p className="py-4">
-                    Mohon simpan data dibawah ini untuk digunakan login di halaman berikutnya:<br />
-                    Username: <span className="font-bold">{data?.nisn}</span><br />
-                    Password: <span className="font-bold">{parsedate(data?.birthday!)}</span>
+                    {props.isNew ? (
+                        <>
+                            Mohon simpan data dibawah ini untuk digunakan login di halaman berikutnya:<br />
+                            Username: <span className="font-bold">{data?.nisn}</span><br />
+                            Password: <span className="font-bold">{parsedate(data?.birthday!)}</span>
+                        </>
+                    ) : (
+                        <>
+                            Ubah data berhasil, Anda akan dikembalikan ke halaman utama
+                        </>
+                    )}
                </p>
 
                <div className="modal-action mt-4">
                 <button className="btn btn-primary" onClick={() => {
-                    nextRouter.push('/');
+                    nextRouter.push(props.isNew ? '/' : '/profile');
                 }}>OK</button>
                </div>
             </Modal>
