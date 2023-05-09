@@ -37,7 +37,7 @@ const daftarSchema = Yup.object()
         religion: Yup.string().required().oneOf(['islam', 'kristen', 'katolik', 'hindu', 'buddha', 'konghucu']),
         mother_name: Yup.string().required().min(3),
         father_name: Yup.string().required().min(3),
-        birthday: Yup.string().required().matches(/^([a-zA-Z]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]+)$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
+        birthday: Yup.string().required().matches(/^([a-zA-Z\s-]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]{4})$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
         email: Yup.string().required().email(),
         phone: Yup.string().required().matches(/^(08[0-9]{9,10})$/, 'Phone number must be 11 or 12 digits'),
         graduated_year: Yup.number().required(),
