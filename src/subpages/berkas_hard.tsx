@@ -12,13 +12,14 @@ type BerkasHardSubPageProps = {
     certificate_path?: string;
     kip_path?: string;
     mutation_path?: string;
+    photo_path?: string;
     token: string;
 }
 
 export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
     const p = berkases[props.type];
     const [files, setFiles] = React.useState<{
-        pas?: File;
+        photo?: File;
         skhu?: File;
         kk?: File;
         certificate?: File;
@@ -83,7 +84,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
         <React.Fragment>
             <Formik
                 initialValues={{
-                    pas: undefined,
+                    photo: undefined,
                     skhu: undefined,
                     [p.key]: undefined,
                 }}
@@ -123,35 +124,46 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                         }
                     }).then(r => r.json())
                     .then(r => {
-                        console.log(r);    
+                        if (r.error || r.errors) {
+                            setData({
+                                isError: true,
+                                message: r.message || r.error,
+                            });
+                        } else {
+                            setData({
+                                isError: false,
+                                message: r.message,
+                            });
+                        }
+                        helpers.setSubmitting(false);
                     }).catch(e => {
                         setData({isError: true, message: e.message});
                         helpers.setSubmitting(false);
                     });
                 }}
             >
-                {({ errors, setFieldError, isSubmitting, isValid }) => (
+                {({ errors, setFieldError, isSubmitting }) => (
                     <Form>
-                            <FormField label="Foto Pas 3x4">
+                            <FormField label="Foto Pas 3x4" viewUrl={props.photo_path?.replace('public', Routes.baseUrl + '/storage')}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
-                                    handleFileChange('pas', (ev.target.files as FileList)[0] as File, setFieldError);
-                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="pas" required />
-                                {errors.pas ? (
-                                    <p className="text-red-500">{errors.pas}</p>
+                                    handleFileChange('photo', (ev.target.files as FileList)[0] as File, setFieldError);
+                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="photo" required={!props.photo_path} />
+                                {errors.photo ? (
+                                    <p className="text-red-500">{errors.photo}</p>
                                 ) : null}
                             </FormField>
-                            <FormField label="Foto SKHU">
+                            <FormField label="Foto SKHU" viewUrl={props.skhu_path?.replace('public', Routes.baseUrl + '/storage')}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                                     handleFileChange('skhu', (ev.target.files as FileList)[0] as File, setFieldError);
-                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="skhu" required />
+                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="skhu" required={!props.skhu_path} />
                                 {errors.skhu ? (
                                     <p className="text-red-500">{errors.skhu}</p>
                                 ) : null}
                             </FormField>
-                            <FormField label={p.name}>
+                            <FormField viewUrl={props[(p.key + '_path') as keyof BerkasHardSubPageProps]?.replace('public', Routes.baseUrl + '/storage')} label={p.name}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                                     handleFileChange(p.key, (ev.target.files as FileList)[0] as File, setFieldError);
-                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name={p.key} required />
+                                }} type="file" className="w-full file-input file-input-bordered max-w-xs" name={p.key} required={!props[(`${p.key}_path`) as keyof BerkasHardSubPageProps]} />
                                 {errors[p.key] ? (
                                     <p className="text-red-500">{errors[p.key]}</p>
                                 ) : null}
@@ -159,10 +171,13 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                             {data.message ? (
                                 <div className="text-center mt-2">
                                     <div className={`alert alert-${data.isError ? 'error' : 'success'} shadow-lg`}>
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                        <span>{data.isError ? 'Error' : 'Sukses'}! {data.message}</span>
-                                    </div>
+                                        <div>
+                                            {data.isError ?
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                : <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                            }
+                                            <span>{data.isError ? 'Error' : 'Sukses'}! {data.message}</span>
+                                        </div>
                                     </div>
                                 </div>
                             ) : null}

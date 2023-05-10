@@ -90,8 +90,8 @@ export default function Register() {
                     setError(e.message);
                   });
                 }).catch(e => {
-                  setError(e.message);
                   helpers.setSubmitting(false);
+                  setError(e.message);
                 });
               }}
 
