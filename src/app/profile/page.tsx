@@ -74,7 +74,7 @@ export default function ProfilePage() {
                                     Jika Anda ingin mengupload berkas file, dan nilai semester. Klik tombol dibawah ini
                                 </p>
                                 <div className="card-actions justify-end">
-                                    <button disabled onClick={() => router.push('/profile/berkas')} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
+                                    <button onClick={() => router.push('/profile/berkas')} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
                                         upload
                                     </button>
                                 </div>
