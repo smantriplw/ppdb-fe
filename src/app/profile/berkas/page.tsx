@@ -2,6 +2,7 @@
 import { Container } from '@/components/Contents/container';
 import { Routes, fetcher } from '@/lib/routes';
 import { BerkasHardSubPage } from '@/subpages/berkas_hard';
+import { BerkasNilaiSubPage } from '@/subpages/berkas_nilai';
 import Cookies from 'js-cookie';
 import { Righteous } from 'next/font/google';
 import { useRouter } from 'next/navigation';
@@ -32,7 +33,7 @@ export default function BerkasPage() {
         refreshInterval: 3000,
     });
 
-    if (!isLoading && data?.error) {
+    if (!isLoading && data?.error?.toLowerCase() === 'unauthorized') {
         Cookies.remove('ppdb_session');
         router.refresh();
     }
@@ -47,9 +48,13 @@ export default function BerkasPage() {
                 <button className="btn btn-primary bg-[#205280] border-none hover:bg-[#205280] hover:bg-opacity-75" onClick={() => router.back()}>kembali</button>
                 {isLoading ? <h1 className="text-xl font-semibold">Loading...</h1> : null}
                 <div className="mt-4">
-                    {!isLoading && !data.error ? <BerkasHardSubPage type={data.data.type} {...data.data} token={savedToken} /> : null}
+                    {!isLoading && !data?.error ? <BerkasHardSubPage type={data.data.type} {...data.data} token={savedToken} /> : null}
                 </div>
             </Container>
+
+            <div className="mt-4">
+                <BerkasNilaiSubPage token={savedToken!} />
+            </div>
         </React.Fragment>
     )
 }

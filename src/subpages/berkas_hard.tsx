@@ -98,10 +98,13 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
 
                     for (const file of Object.keys(files)) {
                         if (!handleFileChange(file, files[file as keyof typeof files]!)) {
-                            if (!data.message?.length) setData({
-                                isError: true,
-                                message: `${file} is invalid`,
-                            });
+                            if (!data.message?.length) {
+                                setData({
+                                    isError: true,
+                                    message: `${file} is invalid`,
+                                });
+                                helpers.setSubmitting(false);
+                            }
                             break;
                         }
                     }

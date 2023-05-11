@@ -18,6 +18,9 @@ export class Routes
         'archives.edit.details': ['/api/archives/edit/details', 'POST'],
         'archives.edit.nilai': ['/api/archives/edit/nilai', 'POST'],
 
+        'peserta.nilai': ['/api/peserta/nilai', 'GET'],
+        'peserta.nilai.create': ['/api/peserta/nilai', 'POST'],
+
         'config': ['/config', 'GET'],
     };
 
