@@ -28,7 +28,9 @@ export default function BerkasPage() {
         headers: {
             Authorization: `Bearer ${savedToken}`,
         }
-    }));
+    }), {
+        refreshInterval: 3000,
+    });
 
     if (!isLoading && data?.error) {
         Cookies.remove('ppdb_session');

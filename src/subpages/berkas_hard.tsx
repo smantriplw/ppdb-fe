@@ -3,7 +3,9 @@ import { berkases } from '@/lib/berkas_type';
 import { Routes } from '@/lib/routes';
 import { JalurPendaftaran } from '@/resources/shared';
 import { Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { resolve, basename as resolveBase } from 'path';
 
 type BerkasHardSubPageProps = {
     type: JalurPendaftaran;
@@ -32,6 +34,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
     }>({
         isError: false,
     });
+    const router = useRouter();
 
     const handleFileChange = <K extends keyof typeof files>(
         key: string,
@@ -51,16 +54,6 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
             return 0;
         }
 
-        if (Math.floor(file.size / 1024 / 1024) > 1) {
-            if (setFieldErr)
-                setFieldErr(key as K, 'Maximum file size reached');
-            setData({
-                isError: true,
-                message: `Couldn't process ${key} file, your file has a bigger size`,
-            });
-
-            return 0;
-        }
         if (!/^(application|image)\/(png|jpeg|jpg|pdf)$/gi.test(file.type)) {
             if (setFieldErr)
                 setFieldErr(key as K, 'Invalid mimetype');
@@ -68,6 +61,17 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                 isError: true,
                 message: `${key} file is invalid`,
             });
+            return 0;
+        }
+
+        if (file.size >= 1000000) {
+            if (setFieldErr)
+                setFieldErr(key as K, 'Maximum file size reached');
+            setData({
+                isError: true,
+                message: `Couldn't process ${key} file, your file has a bigger size`,
+            });
+
             return 0;
         }
 
@@ -136,6 +140,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                             });
                         }
                         helpers.setSubmitting(false);
+                        router.refresh();
                     }).catch(e => {
                         setData({isError: true, message: e.message});
                         helpers.setSubmitting(false);
@@ -144,7 +149,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
             >
                 {({ errors, setFieldError, isSubmitting }) => (
                     <Form>
-                            <FormField label="Foto Pas 3x4" viewUrl={props.photo_path?.replace('public', Routes.baseUrl + '/storage')}>
+                            <FormField label="Foto Pas 3x4" viewUrl={props.photo_path?.replace('public', Routes.baseUrl + '/storage')} viewName={resolveBase(props.photo_path ?? '')}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                                     handleFileChange('photo', (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="photo" required={!props.photo_path} />
@@ -152,7 +157,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                                     <p className="text-red-500">{errors.photo}</p>
                                 ) : null}
                             </FormField>
-                            <FormField label="Foto SKHU" viewUrl={props.skhu_path?.replace('public', Routes.baseUrl + '/storage')}>
+                            <FormField label="Foto SKHU" viewUrl={props.skhu_path?.replace('public', Routes.baseUrl + '/storage')} viewName={resolveBase(props.skhu_path ?? '')}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                                     handleFileChange('skhu', (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name="skhu" required={!props.skhu_path} />
@@ -160,7 +165,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                                     <p className="text-red-500">{errors.skhu}</p>
                                 ) : null}
                             </FormField>
-                            <FormField viewUrl={props[(p.key + '_path') as keyof BerkasHardSubPageProps]?.replace('public', Routes.baseUrl + '/storage')} label={p.name}>
+                            <FormField viewUrl={props[(p.key + '_path') as keyof BerkasHardSubPageProps]?.replace('public', Routes.baseUrl + '/storage')} label={p.name} viewName={resolveBase(props[(p.key + '_path') as keyof BerkasHardSubPageProps]?.replace('public', Routes.baseUrl + '/storage') ?? '')}>
                                 <Field disabled={isSubmitting} onChange={(ev: React.ChangeEvent<HTMLInputElement>) => {
                                     handleFileChange(p.key, (ev.target.files as FileList)[0] as File, setFieldError);
                                 }} type="file" className="w-full file-input file-input-bordered max-w-xs" name={p.key} required={!props[(`${p.key}_path`) as keyof BerkasHardSubPageProps]} />
@@ -170,7 +175,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                             </FormField>
                             {data.message ? (
                                 <div className="text-center mt-2">
-                                    <div className={`alert alert-${data.isError ? 'error' : 'success'} shadow-lg`}>
+                                    <div className={`alert alert-${data.isError ? 'error' : 'success'} shadow-sm`}>
                                         <div>
                                             {data.isError ?
                                                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
