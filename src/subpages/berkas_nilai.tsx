@@ -181,12 +181,12 @@ export const BerkasNilaiSubPage = ({ token }: { token: string; }) => {
                                                         if (value < 0 || value > 100) {
                                                             setData({
                                                                 isError: true,
-                                                                message: `Nilai ${nilai._key.replace('_', ' ').toUpperCase()} tidak boleh lebih dari 100 atau kurang dari 0`,
+                                                                message: `Nilai ${nilai._key.replace('_', ' ').toUpperCase()} harus <= 100 dan > 0`,
                                                             });
                                                             return;
                                                         }
                                                         onChangeProp({ key: nilai._key, target: keyed, value: ev.target.valueAsNumber });
-                                                    }} defaultValue={0} type="number" className="w-min input input-bordered" disabled={loading} value={nilai[keyed as keyof typeof nilai]} />
+                                                    }} defaultValue={0} type="number" className="input input-bordered" disabled={loading} value={nilai[keyed as keyof typeof nilai]} />
                                                 </div>
                                             ))}
                                         </div>
@@ -206,6 +206,11 @@ export const BerkasNilaiSubPage = ({ token }: { token: string; }) => {
                                         </div>
                                     </div>
                                 ) : null}
+                                <div className="text-center">
+                                    <p className="font-sans">
+                                        Pastikan nilai yang Anda masukan benar dan sesuai dengan kenyataan
+                                    </p>
+                                </div>
                                 <div className="text-center py-3">
                                     <button type="submit" className={`btn bg-[#0E8A92] border-none`} onClick={submitNilai} disabled={loading}>Upload</button>
                                 </div>
