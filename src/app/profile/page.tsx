@@ -42,7 +42,7 @@ export default function ProfilePage() {
             </div>
             <Container>
                 <h1 className="text-2xl">
-                    {!isLoading && data.data ? <p>Halo <span className="font-bold font-sans">{data.data.name}</span></p> : 'Loading ...'}
+                    {!isLoading && data?.data ? <p>Halo <span className="font-bold font-sans">{data.data.name}</span></p> : 'Loading ...'}
                 </h1>
                 <p>
                     Silahkan lengkapi berkas, dan pengubahan data diri. {!isLoading ? (
