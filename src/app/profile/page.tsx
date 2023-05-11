@@ -52,7 +52,7 @@ export default function ProfilePage() {
                         }}>ini</span></span>
                     ) : null}
                 </p>
-                {!isLoading && !data.error ? (
+                {!isLoading && !data?.error ? (
                     <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 py-3">
                         <div className="card bg-[#0E8A92] shadow-md w-fit">
                             <div className="card-body text-white">
