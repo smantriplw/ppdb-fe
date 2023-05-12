@@ -100,7 +100,7 @@ export default function Register() {
                 type: 'zonasi'
               }} 
             >
-              {({ errors, touched, isSubmitting }) => (
+              {({ errors, touched, isSubmitting, handleChange }) => (
                 <Form className="items-center justify-center">
                   {error.length ? (
                     <div className="alert alert-error shadow-sm">
@@ -111,13 +111,13 @@ export default function Register() {
                     </div>
                   ) : null}
                   <FormField label="" labelKey="NISN">
-                    <Field type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" disabled={isSubmitting} name="nisn" />
+                    <Field onChange={handleChange} type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full max-w-xs" disabled={isSubmitting} name="nisn" />
                   </FormField>
                   {errors.nisn && touched.nisn ? (
                       <p className="text-red-500">{errors.nisn}</p>
                     ) : null}
                   <FormField label="" labelKey="JALUR">
-                    <Field as="select" className="select max-w-xs font-normal w-72 md:w-2/3" name="type" required disabled={isSubmitting}>
+                    <Field onChange={handleChange} as="select" className="select max-w-xs font-normal w-72 md:w-2/3" name="type" required disabled={isSubmitting}>
                       <option value={'zonasi'}>Zonasi</option>
                       <option value={'prestasi'}>Prestasi</option>
                       <option value={'afirmasi'}>Afirmasi</option>

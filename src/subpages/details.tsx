@@ -149,22 +149,22 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                 ...props,
                             }}
                         >
-                            {({ errors, touched, isSubmitting }) => (
+                            {({ errors, touched, isSubmitting, handleChange }) => (
                                 <Form>
                                     <FormField label="NIK">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="number" name="nik" placeholder="00XXXXXXXXXXXXX" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="number" name="nik" placeholder="00XXXXXXXXXXXXX" required />
                                         {errors.nik && touched.nik ? (
                                             <p className="text-red-500">{errors.nik}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="NAMA">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="name" placeholder="Contoh: Hanif Dwy Putra S" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="name" placeholder="Contoh: Hanif Dwy Putra S" required />
                                         {errors.name && touched.name ? (
                                             <p className="text-red-500">{errors.name}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="GENDER">
-                                        <Field as="select" disabled={isSubmitting} defaultValue={'L'} name="gender" className="max-w-xs font-normal w-screen select" required>
+                                        <Field onChange={handleChange} as="select" disabled={isSubmitting} defaultValue={'L'} name="gender" className="max-w-xs font-normal w-screen select" required>
                                             <option value="L">Laki</option>
                                             <option value="P">Perempuan</option>
                                         </Field>
@@ -173,7 +173,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                         ) : null}
                                     </FormField>
                                     <FormField label="AGAMA">
-                                        <Field as="select" disabled={isSubmitting} defaultValue={'islam'} name="religion" className="max-w-xs font-normal w-screen select" required>
+                                        <Field onChange={handleChange} as="select" disabled={isSubmitting} defaultValue={'islam'} name="religion" className="max-w-xs font-normal w-screen select" required>
                                             <option value="islam">Islam</option>
                                             <option value="kristen">Kristen</option>
                                             <option value="katolik">Katolik</option>
@@ -186,49 +186,49 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                         ) : null}
                                     </FormField>
                                     <FormField label="NAMA IBU">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="mother_name" placeholder="Contoh: Puan Maharani" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="mother_name" placeholder="Contoh: Puan Maharani" required />
                                         {errors.mother_name && touched.mother_name ? (
                                             <p className="text-red-500">{errors.mother_name}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="NAMA AYAH">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="father_name" placeholder="Contoh: Erick Tohir" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="father_name" placeholder="Contoh: Erick Tohir" required />
                                         {errors.father_name && touched.father_name ? (
                                             <p className="text-red-500">{errors.father_name}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="TTL">
-                                        <Field disabled={props.isNew ? isSubmitting : true} className="input max-w-xs w-full" type="text" name="birthday" placeholder="Contoh: Palu, 24 Maret 2007" required />
+                                        <Field onChange={handleChange} disabled={props.isNew ? isSubmitting : true} className="input max-w-xs w-full" type="text" name="birthday" placeholder="Contoh: Palu, 24 Maret 2007" required />
                                         {errors.birthday && touched.birthday ? (
                                             <p className="text-red-500 break-words">{errors.birthday}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="EMAIL">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="email" name="email" placeholder="Masukan email aktif disini, contoh: hansputera@sman3palu.sch.id" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="email" name="email" placeholder="Masukan email aktif disini, contoh: hansputera@sman3palu.sch.id" required />
                                         {errors.email && touched.email ? (
                                             <p className="text-red-500">{errors.email}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="NO. TELP">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="tel" name="phone" placeholder="Masukan nomor telepon aktif untuk dihubungi. Contoh: 6281346757451" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="tel" name="phone" placeholder="Masukan nomor telepon aktif untuk dihubungi. Contoh: 6281346757451" required />
                                         {errors.phone && touched.phone ? (
                                             <p className="text-red-500">{errors.phone}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="TAHUN LULUS">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="number" name="graduated_year" placeholder="Kamu lulus SMP kapan? Contoh: 2019" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="number" name="graduated_year" placeholder="Kamu lulus SMP kapan? Contoh: 2019" required />
                                         {errors.graduated_year && touched.graduated_year ? (
                                             <p className="text-red-500">{errors.graduated_year}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="ASAL SEKOLAH">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="school" placeholder="Kamu asal sekolah mana? Masukin disini ya, contohnya: SMP Negeri 6 Palu" required />
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="school" placeholder="Kamu asal sekolah mana? Masukin disini ya, contohnya: SMP Negeri 6 Palu" required />
                                         {errors.school && touched.school ? (
                                             <p className="text-red-500">{errors.school}</p>
                                         ) : null}
                                     </FormField>
                                     <FormField label="ALAMAT">
-                                        <Field disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="address" placeholder="Kamu tinggal dimana? Masukin disini ya. Contohnya: Jl. Bikini Bottom, Blok 16" required/>
+                                        <Field onChange={handleChange} disabled={isSubmitting} className="input max-w-xs w-full" type="text" name="address" placeholder="Kamu tinggal dimana? Masukin disini ya. Contohnya: Jl. Bikini Bottom, Blok 16" required/>
                                         {errors.address && touched.address ? (
                                             <p className="text-red-500">{errors.address}</p>
                                         ) : null}

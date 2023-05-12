@@ -108,16 +108,16 @@ export default function Login() {
               birth: '',
             }}
           >
-            {({ errors, touched, isSubmitting }) => (
+            {({ errors, touched, isSubmitting, handleChange }) => (
               <Form>
                 <FormField labelKey="NISN" label="">
-                  <Field disabled={isSubmitting} type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full md:w-max max-w-xs" name="nisn" />
+                  <Field onChange={handleChange} disabled={isSubmitting} type="text" placeholder="00XXXXXXXXXXXXX" className="input input-bordered w-full md:w-max max-w-xs" name="nisn" />
                 </FormField>
                 {errors.nisn && touched.nisn ? (
                     <p className="text-red-500">{errors.nisn}</p>
                   ) : null}
                 <FormField labelKey="Password" label="">
-                  <Field disabled={isSubmitting} type="text" placeholder="Contoh: 24032007" className="input input-bordered w-full max-w-xs" name="birth" />
+                  <Field onChange={handleChange} disabled={isSubmitting} type="text" placeholder="Contoh: 24032007" className="input input-bordered w-full max-w-xs" name="birth" />
                 </FormField>
                 {errors.birth && touched.birth ? (
                     <p className="text-red-500">{errors.birth}</p>
