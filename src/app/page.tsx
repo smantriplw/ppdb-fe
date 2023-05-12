@@ -87,6 +87,13 @@ export default function Login() {
                   });
                   helpers.setSubmitting(false);
                 } else {
+                  if (!res?.data) {
+                    setData({
+                      isError: true,
+                      message: 'Login failed, try again',
+                    });
+                    return;
+                  }
                   Cookies.set('ppdb_session', res.data.token);
 
                   router.push('/profile');
