@@ -1,7 +1,7 @@
 import { Container } from '@/components/Contents/container'
 import { Modal } from '@/components/Contents/modal';
 import { FormField } from '@/components/Forms/field';
-import { isValidDate, parsedate, replaceDateWithMaps } from '@/lib/date';
+import { isValidDate, parsedate, parsedate2, replaceDateWithMaps } from '@/lib/date';
 import { Routes } from '@/lib/routes';
 import { SharedData } from '@/resources/shared';
 import { Field, Form, Formik } from 'formik';
@@ -80,14 +80,21 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
 
                                 const tokenCaptcha = await executeRecaptcha('create');
                                 if (props.isNew) {
+                                    const formatter = new Intl.DateTimeFormat('id-ID', {
+                                        month: 'long',
+                                        day: '2-digit',
+                                        year: 'numeric',
+                                    });
                                     const router = Routes.route('archives.create');
                                     fetch(router.url, {
                                         method: router.method,
-                                        body: JSON.stringify(Object.assign(values, {
+                                        body: JSON.stringify({
+                                            ...values,
                                             type: props.jalur,
                                             nisn: props.nisn,
+                                            birthday: values.birthday.split(',').at(0) + ', ' + formatter.format(parsedate2(values.birthday)),
                                             _gtoken: tokenCaptcha,
-                                        })),
+                                        }),
                                         headers: {
                                             Accept: 'application/json',
                                             'Content-Type': 'application/json',
@@ -100,6 +107,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                         } else {
                                             setData(res.data);
                                             helpers.setSubmitting(false);
+                                            toggleWait();
                                         }
                                     }).catch((e) => {
                                         setFetchError(e.message);

@@ -92,6 +92,7 @@ export default function Login() {
                       isError: true,
                       message: 'Login failed, try again',
                     });
+                    helpers.setSubmitting(false);
                     return;
                   }
                   Cookies.set('ppdb_session', res.data.token);
