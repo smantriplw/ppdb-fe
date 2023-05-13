@@ -33,16 +33,16 @@ const daftarSchema = Yup.object()
             message: 'NIK must be 16 chars',
         }),
         name: Yup.string().required().min(3),
-        gender: Yup.string().oneOf(['L', 'P']).required(),
-        religion: Yup.string().required().oneOf(['islam', 'kristen', 'katolik', 'hindu', 'buddha', 'konghucu']),
+        gender: Yup.string().oneOf(['L', 'P']),
+        religion: Yup.string().oneOf(['islam', 'kristen', 'katolik', 'hindu', 'buddha', 'konghucu']),
         mother_name: Yup.string().required().min(3),
         father_name: Yup.string().required().min(3),
-        birthday: Yup.string().required().matches(/^([a-zA-Z\s-]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]{4})$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
-        email: Yup.string().required().email(),
-        phone: Yup.string().required().matches(/^(08[0-9]{9,10})$/, 'Phone number must be 11 or 12 digits'),
+        birthday: Yup.string().matches(/^([a-zA-Z\s-]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]{4})$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
+        email: Yup.string().email(),
+        phone: Yup.string().matches(/^(08[0-9]{9,10})$/, 'Phone number must be 11 or 12 digits'),
         graduated_year: Yup.number().required(),
-        school: Yup.string().required().min(10).max(50),
-        address: Yup.string().required().min(5).max(50),
+        school: Yup.string().min(10).max(50),
+        address: Yup.string().min(5).max(50),
     });
 
 export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & SharedData) => {
@@ -156,6 +156,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                 address: '',
                                 ...props,
                             }}
+                            validateOnChange
                         >
                             {({ errors, touched, isSubmitting, handleChange }) => (
                                 <Form>
