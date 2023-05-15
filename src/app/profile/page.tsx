@@ -1,11 +1,14 @@
 'use client';
 import { Container } from '@/components/Contents/container';
+import { Modal } from '@/components/Contents/modal';
 import { Routes, fetcher } from '@/lib/routes';
 import Cookies from 'js-cookie';
 import { Righteous } from 'next/font/google';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import { useBoolean } from 'usehooks-ts';
+import Image from 'next/image'
 
 const righteous = Righteous({
     weight: '400',
@@ -13,14 +16,34 @@ const righteous = Righteous({
   });
 
 export default function ProfilePage() {
+    const { value: showUnduh, toggle: toggleUnduh } = useBoolean(false);
     const savedToken = Cookies.get('ppdb_session');
     const router = useRouter();
+    const imgRef = React.useRef<HTMLImageElement>(null);
+
+    const refreshUnduh = React.useCallback(() => {
+        if (!imgRef.current) return;
+        const cardRoute = Routes.route('peserta.card');
+        fetch(cardRoute.url + '?force=1', {
+            method: cardRoute.method,
+            headers: {
+                Authorization: `Bearer ${savedToken}`,
+            }
+        }).then(r => r.blob()).then(b => {
+            const urlCreator = window.webkitURL || window.URL;
+            imgRef.current!.src = urlCreator.createObjectURL(b);
+        });
+    }, [imgRef, savedToken]);
 
     useEffect(() => {
         if (!savedToken) {
             router.push('/');
         }
-    }, [router, savedToken]);
+
+        if (showUnduh && imgRef.current) {
+            refreshUnduh();
+        }
+    }, [router, savedToken, showUnduh, imgRef, refreshUnduh]);
 
     const route = Routes.route('auth.peserta');
     const { data, isLoading } = useSWR(route.url, url => fetcher(url, {
@@ -87,7 +110,7 @@ export default function ProfilePage() {
                                     Jika Anda ingin mengunduh kartu peserta, diwajibkan untuk melengkapi berkas.
                                 </p>
                                 <div className="card-actions justify-end">
-                                    <button disabled className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
+                                    <button onClick={toggleUnduh} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
                                         unduh
                                     </button>
                                 </div>
@@ -109,6 +132,35 @@ export default function ProfilePage() {
                     </div>
                 ) : null}
             </Container>
+
+            <Modal opened={showUnduh} onClose={toggleUnduh}>
+                <h3 className="font-sans font-bold text-2xl">
+                    KARTU PENDAFTARAN
+                </h3>
+                <div className="py-4">
+                    <div className="avatar">
+                        <div className="rounded">
+                            <Image ref={imgRef} src={''} alt={'Kartu pendaftaran'} />
+                        </div>
+                    </div>
+                    {!imgRef.current?.src.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
+                </div>
+                <div className="modal-action mt-4">
+                    <button className="btn bg-[#205280] border-none" onClick={() => {
+                        if (imgRef.current)
+                            imgRef.current.src = '';
+                        refreshUnduh();
+                    }}>
+                        Refresh
+                    </button>
+                    <a download={data?.data.id + '.png'} href={imgRef.current?.src} className="btn bg-[#456583] border-none">
+                        Download
+                    </a>
+                    <button className="btn btn-primary" onClick={toggleUnduh}>
+                        OK
+                    </button>
+               </div>
+            </Modal>
         </React.Fragment>
     )
 }
