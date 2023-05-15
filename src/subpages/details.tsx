@@ -11,22 +11,6 @@ import React from 'react'
 import { useBoolean } from 'usehooks-ts';
 import * as Yup from 'yup'
 
-declare module 'yup' {
-    interface StringSchema {
-        lahir(msg: string): this;
-    }
-  }
-
-Yup.addMethod(Yup.string, 'lahir', function(this: Yup.StringSchema, msg: string) {
-    return this.test({
-        name: 'lahir',
-        message: msg,
-        test: (v) => {
-            return isValidDate(replaceDateWithMaps(v?.split(',').at(-1)?.trim() ?? ''));
-        },
-    });
-});
-
 const daftarSchema = Yup.object()
     .shape({
         nik: Yup.string().matches(/^[0-9]{16}$/, {
@@ -37,7 +21,7 @@ const daftarSchema = Yup.object()
         religion: Yup.string().oneOf(['islam', 'kristen', 'katolik', 'hindu', 'buddha', 'konghucu']),
         mother_name: Yup.string().required().min(3),
         father_name: Yup.string().required().min(3),
-        birthday: Yup.string().matches(/^([a-zA-Z\s-]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]{4})$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"').lahir('Pastikan nama bulan dan tanggal sesuai'),
+        birthday: Yup.string().matches(/^([a-zA-Z\s-]+)(\s+)?,\s+([0-9]+)\s+([a-zA-Z]+)\s+([0-9]{4})$/gi, 'Format: "NAMA TEMPAT, TANGGAL BULAN TAHUN"'),
         email: Yup.string().email(),
         phone: Yup.string().matches(/^(08[0-9]{9,10})$/, 'Phone number must be 11 or 12 digits'),
         graduated_year: Yup.number().required(),
@@ -75,10 +59,18 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                 if (!executeRecaptcha) {
                                     setFetchError('reCaptcha doesn\'t ready yet');
                                     helpers.setSubmitting(false);
+                                    toggleWait();
                                     return;
                                 }
 
                                 const tokenCaptcha = await executeRecaptcha('create');
+                                if (!isValidDate(replaceDateWithMaps(values.birthday?.split(',').at(-1)?.trim() ?? ''))) {
+                                    setFetchError('Invalid birthday');
+                                    helpers.setSubmitting(false);
+                                    toggleWait();
+                                    return;
+                                }
+
                                 if (props.isNew) {
                                     const formatter = new Intl.DateTimeFormat('id-ID', {
                                         month: 'long',
@@ -251,7 +243,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                                 </div>
                                             </div>
                                         ) : null}
-                                        <button disabled={wait} type="submit" className={`btn border-none bg-[#0E8A92] bg-opacity-90${wait ? ' loading' : ''}`}>
+                                        <button disabled={wait} type="submit" className={`mt-3 btn border-none bg-[#0E8A92] bg-opacity-90${wait ? ' loading' : ''}`}>
                                             submit
                                         </button>
                                     </div>
