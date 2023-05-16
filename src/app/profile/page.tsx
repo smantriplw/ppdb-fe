@@ -19,10 +19,9 @@ export default function ProfilePage() {
     const { value: showUnduh, toggle: toggleUnduh } = useBoolean(false);
     const savedToken = Cookies.get('ppdb_session');
     const router = useRouter();
-    const imgRef = React.useRef<HTMLImageElement>(null);
+    const [imgUrl, setImgUrl] = React.useState<string>('');
 
     const refreshUnduh = React.useCallback(() => {
-        if (!imgRef.current) return;
         const cardRoute = Routes.route('peserta.card');
         fetch(cardRoute.url + '?force=1', {
             method: cardRoute.method,
@@ -31,19 +30,19 @@ export default function ProfilePage() {
             }
         }).then(r => r.blob()).then(b => {
             const urlCreator = window.webkitURL || window.URL;
-            imgRef.current!.src = urlCreator.createObjectURL(b);
+           setImgUrl(urlCreator.createObjectURL(b));
         });
-    }, [imgRef, savedToken]);
+    }, [savedToken]);
 
     useEffect(() => {
         if (!savedToken) {
             router.push('/');
         }
 
-        if (showUnduh && imgRef.current) {
+        if (showUnduh) {
             refreshUnduh();
         }
-    }, [router, savedToken, showUnduh, imgRef, refreshUnduh]);
+    }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh]);
 
     const route = Routes.route('auth.peserta');
     const { data, isLoading } = useSWR(route.url, url => fetcher(url, {
@@ -54,7 +53,7 @@ export default function ProfilePage() {
 
     if (!isLoading && data?.error) {
         Cookies.remove('ppdb_session');
-        router.refresh();
+        router.push('/');
     }
     return (
         <React.Fragment>
@@ -140,20 +139,18 @@ export default function ProfilePage() {
                 <div className="py-4">
                     <div className="avatar">
                         <div className="rounded">
-                            <Image ref={imgRef} src={''} alt={'Kartu pendaftaran'} />
+                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} width={45} height={60} /> : null}
                         </div>
                     </div>
-                    {!imgRef.current?.src.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
+                    {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
                 </div>
                 <div className="modal-action mt-4">
                     <button className="btn bg-[#205280] border-none" onClick={() => {
-                        if (imgRef.current)
-                            imgRef.current.src = '';
                         refreshUnduh();
                     }}>
                         Refresh
                     </button>
-                    <a download={data?.data.id + '.png'} href={imgRef.current?.src} className="btn bg-[#456583] border-none">
+                    <a download={data?.data ? data.data.id + '.png' : null} href={imgUrl} className="btn bg-[#456583] border-none">
                         Download
                     </a>
                     <button className="btn btn-primary" onClick={toggleUnduh}>

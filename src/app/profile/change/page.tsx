@@ -32,7 +32,7 @@ export default function ChangeProfile() {
 
     if (!isLoading && data?.error) {
         Cookies.remove('ppdb_session');
-        router.refresh();
+        router.push('/');
     }
     return (
         <React.Fragment>

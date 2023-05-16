@@ -35,7 +35,7 @@ export default function BerkasPage() {
 
     if (!isLoading && data?.error?.toLowerCase() === 'unauthorized') {
         Cookies.remove('ppdb_session');
-        router.refresh();
+        router.push('/');
     }
     return (
         <React.Fragment>
