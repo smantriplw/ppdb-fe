@@ -179,14 +179,10 @@ export const BerkasNilaiSubPage = ({ token }: { token: string; }) => {
                                                         const value = ev.target.valueAsNumber;
 
                                                         if (value < 0 || value > 100) {
-                                                            setData({
-                                                                isError: true,
-                                                                message: `Nilai ${nilai._key.replace('_', ' ').toUpperCase()} harus <= 100 dan > 0`,
-                                                            });
                                                             return;
                                                         }
-                                                        onChangeProp({ key: nilai._key, target: keyed, value: ev.target.valueAsNumber });
-                                                    }} defaultValue={0} type="number" className="input input-bordered" disabled={loading} value={nilai[keyed as keyof typeof nilai]} />
+                                                        onChangeProp({ key: nilai._key, target: keyed, value });
+                                                    }} type="number" className="input input-bordered" disabled={loading} value={nilai[keyed as keyof typeof nilai]} />
                                                 </div>
                                             ))}
                                         </div>
