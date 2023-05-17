@@ -21,31 +21,6 @@ export default function ProfilePage() {
     const router = useRouter();
     const [imgUrl, setImgUrl] = React.useState<string>('');
 
-    const refreshUnduh = React.useCallback(() => {
-        const cardRoute = Routes.route('peserta.card');
-        fetch(`${cardRoute.url}${imgUrl.length ? '?force=1' : ''}`, {
-            method: cardRoute.method,
-            headers: {
-                Authorization: `Bearer ${savedToken}`,
-            }
-        }).then(r => r.json()).then(r => {
-            if (r.data) {
-                const photoUrl = new URL(r.data.photo, Routes.baseUrl).href;
-                setImgUrl(photoUrl);
-            }
-        });
-    }, [savedToken, imgUrl]);
-
-    useEffect(() => {
-        if (!savedToken) {
-            router.push('/');
-        }
-
-        if (showUnduh) {
-            refreshUnduh();
-        }
-    }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh]);
-
     const route = Routes.route('auth.peserta');
     const { data, isLoading } = useSWR(route.url, url => fetcher(url, {
         headers: {
@@ -69,6 +44,31 @@ export default function ProfilePage() {
         Cookies.remove('ppdb_session');
         router.push('/');
     }
+
+    const refreshUnduh = React.useCallback((force: boolean) => {
+        const cardRoute = Routes.route('peserta.card');
+        fetch(`${cardRoute.url}${force ? '?force=1' : ''}`, {
+            method: cardRoute.method,
+            headers: {
+                Authorization: `Bearer ${savedToken}`,
+            }
+        }).then(r => r.json()).then(r => {
+            if (r.data) {
+                const photoUrl = new URL(r.data.photo, Routes.baseUrl).href;
+                setImgUrl(photoUrl);
+            }
+        });
+    }, [savedToken]);
+
+    useEffect(() => {
+        if (!savedToken) {
+            router.push('/');
+        }
+
+        if (showUnduh) {
+            refreshUnduh(false);
+        }
+    }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh]);
     return (
         <React.Fragment>
             <div className="mb-4 py-3">
@@ -160,7 +160,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="modal-action mt-4">
                     <button className="btn bg-[#205280] border-none" onClick={() => {
-                        refreshUnduh();
+                        refreshUnduh(true);
                     }}>
                         Refresh
                     </button>
