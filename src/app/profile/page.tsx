@@ -53,22 +53,11 @@ export default function ProfilePage() {
             headers: {
                 Authorization: `Bearer ${savedToken}`,
             }
-        }).then(r => r.json()).then(r => {
-            if (r.data) {
-                const photoUrl = new URL(r.data.photo, Routes.baseUrl);
+        }).then(r => r.blob()).then(r => {
+            const urlCreator = window.webkitURL || URL;
 
-                fetch(photoUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                    },
-                }).then(r => r.blob()).then(blob => {
-                    const urlCreator = window.webkitURL || URL;
-                    const outputImg = urlCreator.createObjectURL(blob);
-
-                    setImgUrl(outputImg);
-                });
-            }
+            const photoUrl = urlCreator.createObjectURL(r);
+            setImgUrl(photoUrl);
         });
     }, [savedToken]);
 
@@ -165,7 +154,7 @@ export default function ProfilePage() {
                 <div className="py-4">
                     <div className="avatar">
                         <div className="rounded">
-                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} /> : null}
+                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} width={100} height={100} /> : null}
                         </div>
                     </div>
                     {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}

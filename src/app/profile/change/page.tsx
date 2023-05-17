@@ -41,7 +41,7 @@ export default function ChangeProfile() {
                     DASHBOARD UBAH DATA DIRI
                 </h1>
             </div>
-                {!isLoading && !data?.error ? (
+                {!isLoading && !data?.error && data?.data ? (
                     <DetailsSubPage isNew={false} nisn={data.data.nisn} ttl={data.data.birthday} jalur={data.data.type} {...data.data} token={savedToken} />
                 ) : null}
         </React.Fragment>
