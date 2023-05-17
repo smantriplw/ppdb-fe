@@ -55,8 +55,19 @@ export default function ProfilePage() {
             }
         }).then(r => r.json()).then(r => {
             if (r.data) {
-                const photoUrl = new URL(r.data.photo, Routes.baseUrl).href;
-                setImgUrl(photoUrl);
+                const photoUrl = new URL(r.data.photo, Routes.baseUrl);
+
+                fetch(photoUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                }).then(r => r.blob()).then(blob => {
+                    const urlCreator = window.webkitURL || URL;
+                    const outputImg = urlCreator.createObjectURL(blob);
+
+                    setImgUrl(outputImg);
+                });
             }
         });
     }, [savedToken]);
@@ -165,7 +176,7 @@ export default function ProfilePage() {
                     }}>
                         Refresh
                     </button>
-                    <a download={data?.data ? data.data.id + '.png' : null} target="_blank" href={imgUrl} className="btn bg-[#456583] border-none">
+                    <a download href={imgUrl} className="btn bg-[#456583] border-none">
                         Download
                     </a>
                     <button className="btn btn-primary" onClick={toggleUnduh}>
