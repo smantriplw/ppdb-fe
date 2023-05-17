@@ -4,6 +4,7 @@ import { Modal } from '@/components/Contents/modal';
 import { Routes, fetcher } from '@/lib/routes';
 import Cookies from 'js-cookie';
 import { Righteous } from 'next/font/google';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
@@ -153,7 +154,7 @@ export default function ProfilePage() {
                 <div className="py-4">
                     <div className="avatar">
                         <div className="rounded">
-                            {imgUrl.length ? <img src={imgUrl} alt={'Kartu pendaftaran'} width={45} height={60} /> : null}
+                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} width={45} height={60} /> : null}
                         </div>
                     </div>
                     {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
