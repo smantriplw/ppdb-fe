@@ -69,7 +69,19 @@ export default function ProfilePage() {
         if (showUnduh) {
             refreshUnduh(false);
         }
-    }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh]);
+
+        if (data) {
+            const zoneType = data.data.type;
+            const isAllow = data.data.nilai_completed && !!data.data.skhu_path && !!data.data.photo_path && !!(
+                (zoneType === 'zonasi' && data.data.kk_path) ||
+                (zoneType === 'prestasi' && data.data.certificate_path) ||
+                (zoneType === 'afirmasi' && data.data.kip_path) ||
+                (zoneType === 'mutasi' && data.data.mutation_path)
+            );
+
+            setAllowUnduh(!isAllow);
+        }
+    }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh, data, setAllowUnduh]);
     return (
         <React.Fragment>
             <div className="mb-4 py-3">
