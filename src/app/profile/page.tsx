@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
 import { useBoolean } from 'usehooks-ts';
-import Image from 'next/image'
 
 const righteous = Righteous({
     weight: '400',
@@ -17,20 +16,23 @@ const righteous = Righteous({
 
 export default function ProfilePage() {
     const { value: showUnduh, toggle: toggleUnduh } = useBoolean(false);
+    const { value: allowUnduh, setValue: setAllowUnduh } = useBoolean(false);
     const savedToken = Cookies.get('ppdb_session');
     const router = useRouter();
     const [imgUrl, setImgUrl] = React.useState<string>('');
 
     const refreshUnduh = React.useCallback(() => {
         const cardRoute = Routes.route('peserta.card');
-        fetch(cardRoute.url + '?force=1', {
+        fetch(cardRoute.url, {
             method: cardRoute.method,
             headers: {
                 Authorization: `Bearer ${savedToken}`,
             }
-        }).then(r => r.blob()).then(b => {
-            const urlCreator = window.webkitURL || window.URL;
-           setImgUrl(urlCreator.createObjectURL(b));
+        }).then(r => r.json()).then(r => {
+            if (r.data) {
+                const photoUrl = new URL(r.data.photo, Routes.baseUrl).href;
+                setImgUrl(photoUrl);
+            }
         });
     }, [savedToken]);
 
@@ -49,7 +51,19 @@ export default function ProfilePage() {
         headers: {
             Authorization: `Bearer ${savedToken}`,
         }
-    }));
+    }), {
+        onSuccess(data) {
+            const zoneType = data.data.type;
+            const isAllow = data.data.nilai_completed && !!data.data.skhu_path && !!data.data.photo_path && !!(
+                (zoneType === 'zonasi' && data.data.kk_path) ||
+                (zoneType === 'prestasi' && data.data.certificate_path) ||
+                (zoneType === 'afirmasi' && data.data.kip_path) ||
+                (zoneType === 'mutasi' && data.data.mutation_path)
+            );
+
+            setAllowUnduh(!isAllow);
+        },
+    });
 
     if (!isLoading && data?.error) {
         Cookies.remove('ppdb_session');
@@ -109,7 +123,7 @@ export default function ProfilePage() {
                                     Jika Anda ingin mengunduh kartu peserta, diwajibkan untuk melengkapi berkas.
                                 </p>
                                 <div className="card-actions justify-end">
-                                    <button onClick={toggleUnduh} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
+                                    <button disabled={allowUnduh} onClick={toggleUnduh} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
                                         unduh
                                     </button>
                                 </div>
@@ -139,7 +153,7 @@ export default function ProfilePage() {
                 <div className="py-4">
                     <div className="avatar">
                         <div className="rounded">
-                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} width={45} height={60} /> : null}
+                            {imgUrl.length ? <img src={imgUrl} alt={'Kartu pendaftaran'} width={45} height={60} /> : null}
                         </div>
                     </div>
                     {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
@@ -150,7 +164,7 @@ export default function ProfilePage() {
                     }}>
                         Refresh
                     </button>
-                    <a download={data?.data ? data.data.id + '.png' : null} href={imgUrl} className="btn bg-[#456583] border-none">
+                    <a download={data?.data ? data.data.id + '.png' : null} target="_blank" href={imgUrl} className="btn bg-[#456583] border-none">
                         Download
                     </a>
                     <button className="btn btn-primary" onClick={toggleUnduh}>
