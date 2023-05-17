@@ -23,7 +23,7 @@ export default function ProfilePage() {
 
     const refreshUnduh = React.useCallback(() => {
         const cardRoute = Routes.route('peserta.card');
-        fetch(cardRoute.url, {
+        fetch(cardRoute.url + imgUrl.length ? '?force=1' : '', {
             method: cardRoute.method,
             headers: {
                 Authorization: `Bearer ${savedToken}`,
@@ -34,7 +34,7 @@ export default function ProfilePage() {
                 setImgUrl(photoUrl);
             }
         });
-    }, [savedToken]);
+    }, [savedToken, imgUrl]);
 
     useEffect(() => {
         if (!savedToken) {
