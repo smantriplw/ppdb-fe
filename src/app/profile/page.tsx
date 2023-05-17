@@ -154,7 +154,7 @@ export default function ProfilePage() {
                 <div className="py-4">
                     <div className="avatar">
                         <div className="rounded">
-                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} width={100} height={100} /> : null}
+                            {imgUrl.length ? <Image src={imgUrl} alt={'Kartu pendaftaran'} /> : null}
                         </div>
                     </div>
                     {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
