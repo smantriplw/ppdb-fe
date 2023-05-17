@@ -70,7 +70,7 @@ export default function ProfilePage() {
             refreshUnduh(false);
         }
 
-        if (data) {
+        if (data?.data) {
             const zoneType = data.data.type;
             const isAllow = data.data.nilai_completed && !!data.data.skhu_path && !!data.data.photo_path && !!(
                 (zoneType === 'zonasi' && data.data.kk_path) ||
@@ -84,10 +84,24 @@ export default function ProfilePage() {
     }, [router, savedToken, showUnduh, refreshUnduh, toggleUnduh, data, setAllowUnduh]);
     return (
         <React.Fragment>
-            <div className="mb-4 py-3">
+            <div className="mb-2 py-3">
                 <h1 className={`text-center text-4xl text-[#456583] font-medium ${righteous.className}`}>
                     DASHBOARD LOGIN
                 </h1>
+            </div>
+            <div className="mb-4">
+                <div className="alert alert-error w-1/2 m-1 mx-auto">
+                    <div className="flex items-center">
+                        <div className="text-center">
+                            <h1 className="text-xl font-sans font-extrabold">
+                                PERHATIAN!
+                            </h1>
+                            <p className="font-sans text-lg">
+                                Menu <span className="font-semibold">unduh kartu</span> sudah aktif, bagi yang telah melengkapi berkas dan nilai.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <Container>
                 <h1 className="text-2xl">

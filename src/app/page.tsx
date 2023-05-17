@@ -59,7 +59,6 @@ export default function Login() {
         <div className="flex justify-center">
           <LoginIcon />
         </div>
-
         <h1 className={`text-center text-4xl text-[#456583] font-medium ${righteous.className}`}>
           LOGIN
         </h1>
