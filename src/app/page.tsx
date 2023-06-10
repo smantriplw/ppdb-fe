@@ -63,6 +63,20 @@ export default function Login() {
           LOGIN
         </h1>
       </div>
+      <div className="mt-4">
+          <div className="rounded-md p-3 lg:w-1/2 m-1 mx-auto bg-rose-400">
+              <div>
+                  <div className="text-center">
+                    <h1 className="text-xl font-sans font-extrabold">
+                        PERHATIAN!
+                    </h1>
+                    <p className="font-sans text-lg p-3">
+                        Diperuntukan jalur pendaftaran <span className="uppercase font-bold">afirmasi</span>, dan <span className="uppercase font-bold">prestasi</span> melakukan wawancara ke sekolah pada <span className="font-semibold">14-16 Juni 2023</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+      </div>
       <Container>
           <Formik
             validationSchema={loginPeserta}

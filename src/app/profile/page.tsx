@@ -90,8 +90,8 @@ export default function ProfilePage() {
                 </h1>
             </div>
             <div className="mb-4">
-                <div className="alert alert-error w-1/2 m-1 mx-auto">
-                    <div className="flex items-center">
+                <div className="bg-red-400 rounded-md p-3 w-1/2 m-1 mx-auto">
+                    <div>
                         <div className="text-center">
                             <h1 className="text-xl font-sans font-extrabold">
                                 PERHATIAN!
