@@ -2,12 +2,14 @@
 import { Container } from '@/components/Contents/container';
 import { Modal } from '@/components/Contents/modal';
 import { Routes, fetcher } from '@/lib/routes';
+import { Field, Form, Formik } from 'formik';
 import Cookies from 'js-cookie';
 import { Righteous } from 'next/font/google';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import * as Yup from 'yup'
 import { useBoolean } from 'usehooks-ts';
 
 const righteous = Righteous({
@@ -40,6 +42,9 @@ export default function ProfilePage() {
             setAllowUnduh(!isAllow);
         },
     });
+    // const { data: confirmData } = useSWR(['prestasi', 'afirmasi'].includes(data?.data.type) ? '/api/archives/confirm' : null, url => fetcher(url, {
+    //     head
+    // });
 
     if (!isLoading && data?.error) {
         Cookies.remove('ppdb_session');
@@ -89,15 +94,15 @@ export default function ProfilePage() {
                     DASHBOARD LOGIN
                 </h1>
             </div>
-            <div className="mb-4">
-                <div className="bg-red-400 rounded-md p-3 w-1/2 m-1 mx-auto">
+            <div className="mt-4">
+                <div className="rounded-md p-3 lg:w-1/2 m-1 mx-auto bg-rose-400">
                     <div>
                         <div className="text-center">
                             <h1 className="text-xl font-sans font-extrabold">
                                 PERHATIAN!
                             </h1>
-                            <p className="font-sans text-lg">
-                                Menu <span className="font-semibold">unduh kartu</span> sudah aktif, bagi yang telah melengkapi berkas dan nilai.
+                            <p className="font-sans text-lg p-3">
+                                Diperuntukan jalur pendaftaran <span className="uppercase font-bold">afirmasi</span>, dan <span className="uppercase font-bold">prestasi</span> melakukan wawancara ke sekolah pada <span className="font-semibold">14-16 Juni 2023</span>
                             </p>
                         </div>
                     </div>
@@ -156,6 +161,27 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>
+                        {['prestasi', 'afirmasi'].includes(data?.data.type) && <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
+                            <div className="card-body text-white">
+                                <h2 className="card-title uppercase">
+                                    Konfirmasi Wawancara
+                                </h2>
+                                <Formik initialValues={{confirm: false}} validationSchema={Yup.object({
+                                    confirm: Yup.boolean().required(),
+                                })} onSubmit={(values, actions) => {
+
+                                }}>
+                                    {(props) => (
+                                        <Form>
+                                            <div className="form-control">
+                                                <label htmlFor="confirm">Apakah Anda siap diwawancara?</label>
+                                                <Field type="checkbox" className="checkbox" checked={} />
+                                            </div>
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </div>
+                        </div>}
                         <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
                             <div className="card-body text-white">
                                 <h2 className="card-title text-center">CONTACT PERSON</h2>
