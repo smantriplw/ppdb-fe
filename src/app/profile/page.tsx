@@ -2,14 +2,12 @@
 import { Container } from '@/components/Contents/container';
 import { Modal } from '@/components/Contents/modal';
 import { Routes, fetcher } from '@/lib/routes';
-import { Field, Form, Formik } from 'formik';
 import Cookies from 'js-cookie';
 import { Righteous } from 'next/font/google';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
-import * as Yup from 'yup'
 import { useBoolean } from 'usehooks-ts';
 
 const righteous = Righteous({
@@ -161,7 +159,7 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>
-                        {['prestasi', 'afirmasi'].includes(data?.data.type) && <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
+                        {/* {['prestasi', 'afirmasi'].includes(data?.data.type) && <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
                             <div className="card-body text-white">
                                 <h2 className="card-title uppercase">
                                     Konfirmasi Wawancara
@@ -181,7 +179,7 @@ export default function ProfilePage() {
                                     )}
                                 </Formik>
                             </div>
-                        </div>}
+                        </div>} */}
                         <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
                             <div className="card-body text-white">
                                 <h2 className="card-title text-center">CONTACT PERSON</h2>
