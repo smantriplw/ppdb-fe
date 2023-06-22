@@ -100,7 +100,7 @@ export default function ProfilePage() {
                                 PERHATIAN!
                             </h1>
                             <p className="font-sans text-lg p-3">
-                                Diperuntukan jalur pendaftaran <span className="uppercase font-bold">afirmasi</span>, dan <span className="uppercase font-bold">prestasi</span> melakukan wawancara ke sekolah pada <span className="font-semibold">14-16 Juni 2023</span>
+                                Pengumuman yang dilaksanakan pada tanggal <span className="font-semibold">23 Juni 2023</span> secara offline, mohon dapat mengingat NISN-nya masing-masing. Karena pengumuman berdasarkan NISN, dan nama.
                             </p>
                         </div>
                     </div>

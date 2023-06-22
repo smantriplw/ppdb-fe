@@ -11,6 +11,7 @@ import { Field, Form, Formik } from 'formik';
 import { Routes } from '@/lib/routes';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
+import { useReCaptcha } from 'next-recaptcha-v3';
 
 declare module 'yup' {
   interface StringSchema {
@@ -45,6 +46,7 @@ export default function Login() {
     isError: false,
   });
   const router = useRouter();
+  const { executeRecaptcha } = useReCaptcha();
 
   const savedToken = Cookies.get('ppdb_session');
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function Login() {
                         PERHATIAN!
                     </h1>
                     <p className="font-sans text-lg p-3">
-                        Diperuntukan jalur pendaftaran <span className="uppercase font-bold">afirmasi</span>, dan <span className="uppercase font-bold">prestasi</span> melakukan wawancara ke sekolah pada <span className="font-semibold">14-16 Juni 2023</span>
+                        Pengumuman yang dilaksanakan pada tanggal <span className="font-semibold">23 Juni 2023</span> secara offline, mohon dapat mengingat NISN-nya masing-masing. Karena pengumuman berdasarkan NISN, dan nama.
                     </p>
                 </div>
             </div>
@@ -85,37 +87,48 @@ export default function Login() {
               setData({ isError: false });
 
               const route = Routes.route('auth.peserta.login');
-              fetch(route.url, {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json', 
-                },
-                body: JSON.stringify(values),
-              }).then(res => res.json()).then(res => {
-                if (res.errors || res.error) {
-                  setData({
-                    isError: true,
-                    message: res.error || res.message,
-                  });
-                  helpers.setSubmitting(false);
-                } else {
-                  if (!res?.data) {
+              executeRecaptcha('login').then(token => {
+                fetch(route.url, {
+                  method: 'POST',
+                  headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json', 
+                  },
+                  body: JSON.stringify({...values, _gtoken: token}),
+                }).then(res => res.json()).then(res => {
+                  if (res.errors || res.error) {
                     setData({
                       isError: true,
-                      message: 'Login failed, try again',
+                      message: res.error || res.message,
                     });
                     helpers.setSubmitting(false);
-                    return;
-                  }
-                  Cookies.set('ppdb_session', res.data.token);
+                  } else {
+                    if (!res?.data) {
+                      setData({
+                        isError: true,
+                        message: 'Login failed, try again',
+                      });
+                      helpers.setSubmitting(false);
+                      return;
+                    }
+                    Cookies.set('ppdb_session', res.data.token);
 
-                  router.push('/profile');
-                }
-              }).catch((e) => setData({
-                isError: true,
-                message: e.message,
-              }));
+                    router.push('/profile');
+                  }
+                }).catch((e) => {
+                  setData({
+                    isError: true,
+                    message: e.message,
+                  });
+                  helpers.setSubmitting(false);
+              });
+              }).catch((e) => {
+                setData({
+                  isError: true,
+                  message: e.message,
+                });
+                helpers.setSubmitting(false);
+              });
             }}
             initialValues={{
               nisn: '',
