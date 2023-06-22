@@ -60,6 +60,13 @@ export default function Register() {
                 helpers.setSubmitting(true);
                 setError('');
 
+                const expiredDate = new Date(2023, 4, 10);
+                if (Date.now() > expiredDate.getTime()) {
+                  helpers.setSubmitting(false);
+                  setError('Pendaftar telah ditutup');
+                  return;
+                }
+
                 const router = Routes.route('archives.check');
 
                 executeRecaptcha('check').then(token => {
