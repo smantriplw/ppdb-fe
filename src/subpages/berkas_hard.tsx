@@ -190,7 +190,7 @@ export const BerkasHardSubPage = (props: BerkasHardSubPageProps) => {
                                 </div>
                             ) : null}
                             <div className="text-center py-3">
-                                <button type="submit" disabled={isSubmitting} className={`btn bg-[#0E8A92] border-none${isSubmitting ? ' loading' : ''}`}>Upload</button>
+                                <button type="submit" disabled={isSubmitting} className={`text-white btn bg-[#0E8A92] border-none${isSubmitting ? ' loading' : ''}`}>Upload</button>
                             </div>
                     </Form>
                 )}

@@ -165,7 +165,7 @@ export default function Login() {
                   </p>
                 </div>
                 <div className="text-center">
-                  <button disabled={isSubmitting} className={`btn border-none mt-2 bg-[#0E8A92] bg-opacity-90${isSubmitting ? ' loading' : ''}`}>login</button>
+                  <button disabled={isSubmitting} className={`text-white btn border-none mt-2 bg-[#0E8A92] bg-opacity-90${isSubmitting ? ' loading' : ''}`}>login</button>
                 </div>
               </Form>
             )}

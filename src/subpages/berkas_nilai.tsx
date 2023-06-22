@@ -208,7 +208,7 @@ export const BerkasNilaiSubPage = ({ token }: { token: string; }) => {
                                     </p>
                                 </div>
                                 <div className="text-center py-3">
-                                    <button type="submit" className={`btn bg-[#0E8A92] border-none`} onClick={submitNilai} disabled={loading}>Upload</button>
+                                    <button type="submit" className={`text-white btn bg-[#0E8A92] border-none`} onClick={submitNilai} disabled={loading}>Upload</button>
                                 </div>
                             </>
                             ) : <h1 className="text-center text-xl">Loading...</h1>}

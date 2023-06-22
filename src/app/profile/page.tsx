@@ -210,15 +210,15 @@ export default function ProfilePage() {
                     {!imgUrl.length ? <h2 className="font-sans text-xl">LOADING...</h2> : null}
                 </div>
                 <div className="modal-action mt-4">
-                    <button className="btn bg-[#205280] border-none" onClick={() => {
+                    <button className="text-white btn bg-[#205280] btn-neutral border-none" onClick={() => {
                         refreshUnduh(true);
                     }}>
                         Refresh
                     </button>
-                    <a download href={imgUrl} className="btn bg-[#456583] border-none">
+                    <a download href={imgUrl} className="text-white btn-neutral btn bg-[#456583] border-none">
                         Download
                     </a>
-                    <button className="btn btn-primary" onClick={toggleUnduh}>
+                    <button className="text-white btn btn-primary" onClick={toggleUnduh}>
                         OK
                     </button>
                </div>

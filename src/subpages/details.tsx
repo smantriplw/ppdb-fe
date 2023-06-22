@@ -243,7 +243,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                                 </div>
                                             </div>
                                         ) : null}
-                                        <button disabled={wait} type="submit" className={`mt-3 btn border-none bg-[#0E8A92] bg-opacity-90${wait ? ' loading' : ''}`}>
+                                        <button disabled={wait} type="submit" className={`text-white mt-3 btn border-none btn-neutral bg-[#0E8A92] bg-opacity-90${wait ? ' loading' : ''}`}>
                                             submit
                                         </button>
                                     </div>
@@ -276,7 +276,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                </p>
 
                <div className="modal-action mt-4">
-                <button className="btn btn-primary" onClick={() => {
+                <button className="btn btn-primary text-white" onClick={() => {
                     nextRouter.push(props.isNew ? '/' : '/profile');
                 }}>OK</button>
                </div>
