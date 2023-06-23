@@ -44,10 +44,12 @@ export default function ProfilePage() {
     //     head
     // });
 
-    if (!isLoading && data?.error) {
-        Cookies.remove('ppdb_session');
-        router.push('/');
-    }
+    React.useEffect(() => {
+        if (!isLoading && data?.error) {
+            Cookies.remove('ppdb_session');
+            router.push('/');
+        }
+    }, [isLoading, data, router]);
 
     const refreshUnduh = React.useCallback((force: boolean) => {
         const cardRoute = Routes.route('peserta.card');
@@ -159,7 +161,7 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="card w-fit bg-[#0E8A92] shadow-md">
+                        {data?.data?.verificator_id !== null && <div className="card w-fit bg-[#0E8A92] shadow-md">
                             <div className="card-body text-white">
                                 <h2 className="card-title">DAFTAR ULANG</h2>
                                 <p>
@@ -171,7 +173,7 @@ export default function ProfilePage() {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         {/* {['prestasi', 'afirmasi'].includes(data?.data.type) && <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
                             <div className="card-body text-white">
                                 <h2 className="card-title uppercase">

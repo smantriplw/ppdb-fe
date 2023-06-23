@@ -29,15 +29,18 @@ export default function ChangeProfile() {
         }
     }));
 
-    if (!isLoading && data?.error) {
-        Cookies.remove('ppdb_session');
-        router.push('/');
-    }
+    React.useEffect(() => {
+        if (!isLoading && data?.error) {
+            Cookies.remove('ppdb_session');
+            router.push('/');
+        }
+    }, [isLoading, data, router]);
+
     return (
         <React.Fragment>
             <div className="mb-4 py-3">
                 <h1 className={`text-center text-4xl text-[#456583] font-medium ${righteous.className}`}>
-                    DASHBOARD UBAH DATA DIRI
+                    {isLoading ? 'Loading...' : 'DASHBOARD UBAH DATA DIRI'}
                 </h1>
             </div>
                 {!isLoading && !data?.error && data?.data ? (

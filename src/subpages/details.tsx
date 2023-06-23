@@ -225,7 +225,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                         </div>
                                         <div className="join gap-4">
                                             <FormField label="GENDER">
-                                                <Field onChange={handleChange} as="select" disabled={isSubmitting} defaultValue={'L'} name="gender" className="max-w-xs join-item font-normal w-screen select" required>
+                                                <Field onChange={handleChange} as="select" disabled={isSubmitting} name="gender" className="max-w-xs join-item font-normal w-screen select" required>
                                                     <option value="L">Laki</option>
                                                     <option value="P">Perempuan</option>
                                                 </Field>
@@ -234,7 +234,7 @@ export const DetailsSubPage = (props:{ isNew: boolean; token?: string; } & Share
                                                 ) : null}
                                             </FormField>
                                             <FormField label="AGAMA">
-                                                <Field onChange={handleChange} as="select" disabled={isSubmitting} defaultValue={'islam'} name="religion" className="max-w-xs join-item font-normal w-screen select" required>
+                                                <Field onChange={handleChange} as="select" disabled={isSubmitting} name="religion" className="max-w-xs join-item font-normal w-screen select" required>
                                                     <option value="islam">Islam</option>
                                                     <option value="kristen">Kristen</option>
                                                     <option value="katolik">Katolik</option>

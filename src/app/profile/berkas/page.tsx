@@ -32,11 +32,13 @@ export default function BerkasPage() {
     }), {
         refreshInterval: 3000,
     });
+    React.useEffect(() => {
+        if (!isLoading && data?.error?.toLowerCase() === 'unauthorized') {
+            Cookies.remove('ppdb_session');
+            router.push('/');
+        }
+    }, [isLoading, data, router]);
 
-    if (!isLoading && data?.error?.toLowerCase() === 'unauthorized') {
-        Cookies.remove('ppdb_session');
-        router.push('/');
-    }
     return (
         <React.Fragment>
             <div className="mb-4 py-3">
