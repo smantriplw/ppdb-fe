@@ -159,6 +159,19 @@ export default function ProfilePage() {
                                 </div>
                             </div>
                         </div>
+                        <div className="card w-fit bg-[#0E8A92] shadow-md">
+                            <div className="card-body text-white">
+                                <h2 className="card-title">DAFTAR ULANG</h2>
+                                <p>
+                                    Sepertinya Anda lulus dalam seleksi pendaftaran, silahkan mengisi formulir daftar ulangnya ya
+                                </p>
+                                <div className="card-actions justify-end">
+                                    <button onClick={() => router.push('/profile/daftar_ulang')} className="btn btn-primary bg-[#205280] border-none  hover:bg-[#205280] hover:bg-opacity-75">
+                                        daftar ulang
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         {/* {['prestasi', 'afirmasi'].includes(data?.data.type) && <div className="card w-fit bg-[#0E8A92] shadow-md items-center">
                             <div className="card-body text-white">
                                 <h2 className="card-title uppercase">

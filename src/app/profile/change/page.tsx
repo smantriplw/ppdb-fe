@@ -1,5 +1,4 @@
 'use client';
-import { Container } from '@/components/Contents/container';
 import { Routes, fetcher } from '@/lib/routes';
 import { DetailsSubPage } from '@/subpages/details';
 import Cookies from 'js-cookie';

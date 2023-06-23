@@ -21,6 +21,8 @@ export class Routes
         'peserta.nilai': ['/api/peserta/nilai', 'GET'],
         'peserta.nilai.create': ['/api/peserta/nilai', 'POST'],
         'peserta.card': ['/api/peserta/card', 'GET'],
+        'peserta.daftar_ulang': ['/api/peserta/daftar_ulang', 'GET'],
+        'peserta.daftar_ulang.update': ['/api/peserta/daftar_ulang', 'POST'],
 
         'config': ['/config', 'GET'],
     };
