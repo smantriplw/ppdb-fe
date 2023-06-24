@@ -97,7 +97,7 @@ export default function ProfilePage() {
             <div className="mt-4">
                 <div className="rounded-md p-3 lg:w-1/2 m-1 mx-auto bg-slate-500">
                   <div>
-                      <div className="text-center">
+                      <div className="text-center text-white">
                             <h1 className="text-xl font-sans font-extrabold">
                                 SELAMAT DATANG!
                             </h1>
