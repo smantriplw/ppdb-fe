@@ -66,14 +66,14 @@ export default function Login() {
         </h1>
       </div>
       <div className="mt-4">
-          <div className="rounded-md p-3 lg:w-1/2 m-1 mx-auto bg-rose-400">
+          <div className="rounded-md p-3 lg:w-1/2 m-1 mx-auto bg-slate-500">
               <div>
                   <div className="text-center">
                     <h1 className="text-xl font-sans font-extrabold">
-                        PERHATIAN!
+                        SELAMAT DATANG!
                     </h1>
                     <p className="font-sans text-lg p-3">
-                        Pengumuman yang dilaksanakan pada tanggal <span className="font-semibold">23 Juni 2023</span> secara offline, mohon dapat mengingat NISN-nya masing-masing. Karena pengumuman berdasarkan NISN, dan nama.
+                        Hai adik calon peserta didik baru, selamat datang di situs PPDB SMAN 3 Palu, silahkan mengisi formulir yang tersedia ya.
                     </p>
                 </div>
             </div>
