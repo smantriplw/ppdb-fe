@@ -122,10 +122,10 @@ export default function DaftarUlangPage() {
         <React.Fragment>
             <div className="mb-4 py-3">
                 <h1 className={`text-center text-4xl text-[#456583] font-medium ${righteous.className}`}>
-                    {isLoading || !data?.data || !daftarUlangData?.data ? 'Loading...' : data?.data.verificator_id ? 'DASHBOARD DAFTAR ULANG' : 'NO ACCESS'}
+                    {isLoading || !data?.data || !daftarUlangData ? 'Loading...' : data?.data.verificator_id ? 'DASHBOARD DAFTAR ULANG' : 'NO ACCESS'}
                 </h1>
             </div>
-            {!isLoading && data?.data.verificator_id && daftarUlangData?.data && (
+            {!isLoading && data?.data.verificator_id && daftarUlangData && (
                 <div>
                     <Container>
                         <button className="btn btn-primary bg-[#205280] border-none hover:bg-[#205280] hover:bg-opacity-75" onClick={() => router.back()}>
@@ -161,7 +161,7 @@ export default function DaftarUlangPage() {
                                     birth_father: 0,
                                     last_edu_father: 'default',
                                     salary_father: 'default',
-                                    ...daftarUlangData?.data,
+                                    ...daftarUlangData?.data ?? {},
                                 })}
                                 validateOnChange
                                 onSubmit={(values, actions) => {
