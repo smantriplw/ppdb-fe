@@ -48,7 +48,7 @@ export default function DaftarUlangPage() {
         [
             'Jalan Kaki', 'Angkutan umum/bus/pete-pete', 'Mobil/bus antar jemput',
             'Kereta Api', 'Ojek', 'Andong/bendi/sado/dokar/delman/becak',
-            'Perahu penyeberangan/rakit/getek', 'Kuda', 'Sepeda',
+            'Perahu penyeberangan/rakit/getek', 'Motor', 'Sepeda',
         ]
     ];
     const daftarUlangSchema = Yup.object({
