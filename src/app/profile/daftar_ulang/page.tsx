@@ -64,7 +64,7 @@ export default function DaftarUlangPage() {
         head_circumference: Yup.number().required(),
         school_distance: Yup.number().required(),
         school_est_time: Yup.number().required(),
-        siblings: Yup.number().min(1).required(),
+        siblings: Yup.number().min(0).required(),
         siblings_position: Yup.number().min(1).required(),
         transportation: Yup.string().oneOf(trans).required(),
         live: Yup.string().oneOf(lives).required(),
