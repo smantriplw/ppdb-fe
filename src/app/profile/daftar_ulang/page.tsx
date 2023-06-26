@@ -57,7 +57,7 @@ export default function DaftarUlangPage() {
         }).required(),
         kabupaten: Yup.string().max(255).min(4).required(),
         kecamatan: Yup.string().max(255).min(4).required(),
-        no_kip: Yup.number().notRequired(),
+        no_kip: Yup.string().notRequired(),
 
         height_body: Yup.number().min(30).required(),
         width_body: Yup.number().required(),
